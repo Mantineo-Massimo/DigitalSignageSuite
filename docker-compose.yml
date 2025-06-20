@@ -1,0 +1,32 @@
+services:
+  bot:
+    container_name: bot-telegram
+    build:
+      context: ./telegram-kiosk-display
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"                        # Host:Container (Flask+Telethon)
+    env_file:
+      - ./telegram-kiosk-display/.env     # Carica API_ID, SESSION_STRING, ecc.
+    volumes:
+      - ./telegram-kiosk-display/web:/app/web:ro    # Web UI in sola lettura
+    networks:
+      - ciam_botnet
+    restart: unless-stopped
+
+  lession:
+    container_name: info-lession
+    build:
+      context: ./lession-kiosk-display
+      dockerfile: Dockerfile
+    ports:
+      - "5000:8080"                        # Host:Container (Gunicorn ascolta 8080)
+    volumes:
+      - ./lession-kiosk-display/web:/app/web:ro     # Frontend statico (index.html + assets)
+    networks:
+      - ciam_botnet
+    restart: unless-stopped
+
+networks:
+  ciam_botnet:
+    driver: bridge
