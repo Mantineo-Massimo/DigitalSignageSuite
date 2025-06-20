@@ -1,0 +1,6 @@
+[submodule "telegram-kiosk-display"]
+	path = telegram-kiosk-display
+	url = https://github.com/Mantineo-Massimo/telegram-kiosk-display.git
+[submodule "lession-kiosk-display"]
+	path = lession-kiosk-display
+	url = https://github.com/Mantineo-Massimo/lession-kiosk-display.git
