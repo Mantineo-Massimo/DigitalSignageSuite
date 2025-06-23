@@ -4,3 +4,8 @@
 [submodule "lession-kiosk-display"]
 	path = lession-kiosk-display
 	url = https://github.com/Mantineo-Massimo/lession-kiosk-display.git
+[submodule "events-kiosk-display"]
+	path = events-kiosk-display
+	url = https://github.com/Mantineo-Massimo/events-kiosk-display
+
+

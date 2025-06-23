@@ -27,6 +27,19 @@ services:
       - ciam_botnet
     restart: unless-stopped
 
+  events:
+    container_name: info-events
+    build:
+      context: ./events-kiosk-display
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8080"                        # Host:Container (Gunicorn ascolta 8001)
+    volumes:
+      - ./events-kiosk-display/web:/app/web:ro     # Frontend statico (index.html + assets)
+    networks:
+      - ciam_botnet
+    restart: unless-stopped
+
 networks:
   ciam_botnet:
     driver: bridge
