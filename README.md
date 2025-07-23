@@ -153,7 +153,7 @@ DigitalSignageSuite/
 ### 1. Clona il Repository
 
 ```bash
-git clone <URL_DEL_TUO_REPOSITORY>
+git clone https://github.com/Mantineo-Massimo/DigitalSignageSuite
 cd DigitalSignageSuite
 ```
 
