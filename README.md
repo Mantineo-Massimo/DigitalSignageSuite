@@ -49,7 +49,12 @@ Ogni servizio ha un proprio `README.md` dedicato per approfondimenti.
 
 DigitalSignageSuite/
 ├── 📂 docs/
-│   └── 📄 suite-showcase.png
+│   |── 📄 floorplan-showcase.png
+│   |── 📄 schedule-classroom-showcase.png
+│   |── 📄 schedule-floor-showcase.png
+│   |── 📄 telegram-showcase.png
+│   |── 📄 wayfinding-arrow-showcase.png
+│   └── 📄 wayfinding-elevator-showcase.png
 ├── 📂 floorplan-service/
 │   ├── 📂 ui/
 │   │   ├── 📂 assets/
