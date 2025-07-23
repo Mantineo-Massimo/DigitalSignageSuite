@@ -50,7 +50,7 @@ Ogni servizio ha un proprio `README.md` dedicato per approfondimenti.
 DigitalSignageSuite/
 ├── 📂 docs/
 │   └── 📄 suite-showcase.png
-├── 📂 floorplan-display-service/
+├── 📂 floorplan-service/
 │   ├── 📂 ui/
 │   │   ├── 📂 assets/
 │   │   │   └── 📂 building_a/
@@ -67,7 +67,7 @@ DigitalSignageSuite/
 │   ├── 📄 README.md
 │   ├── 📄 requirements.txt
 │   └── 📄 run.py
-├── 📂 schedule-display-service/
+├── 📂 schedule-service/
 │   ├── 📂 app/
 │   │   ├── 📄 config.py
 │   │   ├── 📄 constants.py
@@ -92,7 +92,7 @@ DigitalSignageSuite/
 │   ├── 📄 README.md
 │   ├── 📄 requirements.txt
 │   └── 📄 run.py
-├── 📂 telegram-feed-service/
+├── 📂 telegram-service/
 │   ├── 📂 app/
 │   │   ├── 📂 api/
 │   │   │   └── 📄 routes.py
@@ -144,7 +144,7 @@ DigitalSignageSuite/
 
 ## Guida Introduttiva (Getting Started)
 
-### 🔧 Prerequisiti
+### Prerequisiti
 
 - Git
 - Docker
