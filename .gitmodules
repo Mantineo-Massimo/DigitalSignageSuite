@@ -5,7 +5,7 @@
 	path = schedule-service
 	url = https://github.com/Mantineo-Massimo/schedule-service.git
 [submodule "floorplan-service"]
-	path = floorplan-display-service
+	path = floorplan-service
 	url = https://github.com/Mantineo-Massimo/floorplan-service.git
 [submodule "wayfinding-service"]
 	path = wayfinding-service
