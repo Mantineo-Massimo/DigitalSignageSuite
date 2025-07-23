@@ -10,7 +10,3 @@
 [submodule "wayfinding-service"]
 	path = wayfinding-service
 	url = https://github.com/Mantineo-Massimo/wayfinding-service.git
-[submodule "floorplan-service"]
-	path = floorplan-service
-	url = https://github.com/Mantineo-Massimo/floorplan-service.git
-

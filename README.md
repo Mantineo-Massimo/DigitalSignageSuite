@@ -17,7 +17,7 @@ Una suite di microservizi basata su Docker per creare un sistema di digital sign
 
 ---
 
-## 🏛️ Filosofia del Progetto: Un Approccio a Microservizi
+## Filosofia del Progetto: Un Approccio a Microservizi
 
 Questo progetto è stato volutamente progettato utilizzando un'architettura a microservizi. Invece di un'unica, monolitica applicazione, la suite è suddivisa in servizi più piccoli e indipendenti, ognuno con una singola responsabilità.
 
