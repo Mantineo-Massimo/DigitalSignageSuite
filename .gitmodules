@@ -1,11 +1,16 @@
-[submodule "telegram-kiosk-display"]
-	path = telegram-kiosk-display
-	url = https://github.com/Mantineo-Massimo/telegram-kiosk-display.git
-[submodule "lession-kiosk-display"]
-	path = lession-kiosk-display
-	url = https://github.com/Mantineo-Massimo/lession-kiosk-display.git
-[submodule "events-kiosk-display"]
-	path = events-kiosk-display
-	url = https://github.com/Mantineo-Massimo/events-kiosk-display.git
-
+[submodule "telegram-service"]
+	path = telegram-service
+	url = https://github.com/Mantineo-Massimo/telegram-service.git
+[submodule "schedule-service"]
+	path = schedule-service
+	url = https://github.com/Mantineo-Massimo/schedule-service.git
+[submodule "floorplan-service"]
+	path = floorplan-display-service
+	url = https://github.com/Mantineo-Massimo/floorplan-service.git
+[submodule "wayfinding-service"]
+	path = wayfinding-service
+	url = https://github.com/Mantineo-Massimo/wayfinding-service.git
+[submodule "floorplan-service"]
+	path = floorplan-service
+	url = https://github.com/Mantineo-Massimo/floorplan-service.git
 

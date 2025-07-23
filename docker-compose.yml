@@ -1,45 +1,54 @@
 services:
-  bot:
-    container_name: bot-telegram
+  telegram_feed:
+    container_name: telegram_feed_service
     build:
-      context: ./telegram-kiosk-display
+      context: ./telegram-feed-service
       dockerfile: Dockerfile
     ports:
-      - "8080:8080"                        # Host:Container (Flask+Telethon)
+      - "8080:8080"
     env_file:
-      - ./telegram-kiosk-display/.env     # Carica API_ID, SESSION_STRING, ecc.
+      - ./telegram-feed-service/.env
     volumes:
-      - ./telegram-kiosk-display/web:/app/web:ro    # Web UI in sola lettura
+      - ./telegram-feed-service/data:/app/data
     networks:
-      - ciam_botnet
+      - signage_network
     restart: unless-stopped
 
-  lession:
-    container_name: info-lession
+  schedule_display:
+    container_name: schedule_display_service
     build:
-      context: ./lession-kiosk-display
+      context: ./schedule-display-service
       dockerfile: Dockerfile
     ports:
-      - "5000:8080"                        # Host:Container (Gunicorn ascolta 8080)
-    volumes:
-      - ./lession-kiosk-display/web:/app/web:ro     # Frontend statico (index.html + assets)
+      - "8081:8080"
+    env_file:
+      - ./schedule-display-service/.env
     networks:
-      - ciam_botnet
+      - signage_network
     restart: unless-stopped
 
-  events:
-    container_name: info-events
+  floorplan_display:
+    container_name: floorplan_display_service
     build:
-      context: ./events-kiosk-display
+      context: ./floorplan-display-service
       dockerfile: Dockerfile
     ports:
-      - "8000:8080"                        # Host:Container (Gunicorn ascolta 8001)
-    volumes:
-      - ./events-kiosk-display/web:/app/web:ro     # Frontend statico (index.html + assets)
+      - "8082:8080"
     networks:
-      - ciam_botnet
+      - signage_network
+    restart: unless-stopped
+
+  wayfinding:
+    container_name: wayfinding_service
+    build:
+      context: ./wayfinding-service
+      dockerfile: Dockerfile
+    ports:
+      - "8083:8080"
+    networks:
+      - signage_network
     restart: unless-stopped
 
 networks:
-  ciam_botnet:
+  signage_network:
     driver: bridge

@@ -1,193 +1,217 @@
-# info-kiosk-display
 
-![Python](https://img.shields.io/badge/python-3.11-blue)
-![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)
-![Status](https://img.shields.io/badge/status-production--ready-brightgreen)
-![UI](https://img.shields.io/badge/interface-responsive-lightgrey)
-![Docker](https://img.shields.io/badge/container-Docker--ready-blue)
+# Digital Signage Suite
 
-# Info_Kiosk_Display
+Una suite di microservizi basata su Docker per creare un sistema di digital signage universitario completo, modulare e dinamico, interamente controllabile tramite URL e API.
 
-**EN:** A unified Docker‐ready system combining a Telegram feed bot and a real-time classroom/floor schedule display.  
-**IT:** Sistema integrato e pronto per Docker che unisce un bot Telegram per feed e la visualizzazione in tempo reale degli orari di lezione per aula e piano.
+> **Nota:** Per un risultato ottimale, crea una cartella `docs/` nella root del progetto e inserisci uno screenshot rappresentativo della suite in azione.
 
 ---
 
-## 🧩 Description / Descrizione
+## Indice
 
-**EN:**  
-Info_Kiosk_Display brings together two components:
-
-1. **Telegram Feed Bot** (`telegram-kiosk-display`):  
-   - Monitors a single Telegram chat (specified via URL parameter)  
-   - Caches new messages into a JSON feed (`/feed.json?chat=<ID>`)  
-   - Serves a minimal Flask+Telethon API to expose `feed.json` and static UI  
-
-2. **Lesson Kiosk Display** (`lession-kiosk-display`):  
-   - Flask/Gunicorn API exposing `/lessons` (classroom) and `/floor/<floor>` (floor overview)  
-   - Responsive, bilingual (IT/EN) HTML/CSS/JS frontends for single‐classroom and full‐floor views  
-   - Auto-rotating messages / auto-scroll tables  
-
-**IT:**  
-Info_Kiosk_Display mette insieme due componenti:
-
-1. **Bot Telegram per Feed** (`telegram-kiosk-display`):  
-   - Monitora una singola chat Telegram (specificata via parametro URL)  
-   - Salva i nuovi messaggi in un feed JSON (`/feed.json?chat=<ID>`)  
-   - Espone un’API minimale Flask+Telethon per `feed.json` e UI statica  
-
-2. **Display Orari Lezioni** (`lession-kiosk-display`):  
-   - API Flask/Gunicorn con endpoint `/lessons` (vista aula) e `/floor/<floor>` (vista piano)  
-   - Frontend responsive e bilingue (IT/EN) in HTML/CSS/JS per aula singola e piano intero  
-   - Rotazione automatica dei messaggi / scrolling automatico delle tabelle  
+- Filosofia del Progetto
+- Panoramica dei Servizi
+- Struttura Completa del Progetto
+- Guida Introduttiva (Getting Started)
+- Utilizzo e Configurazione degli URL
+- Stack Tecnologico
+- Autori
 
 ---
 
-## 🏗️ Project Structure / Struttura del progetto
+## 🏛️ Filosofia del Progetto: Un Approccio a Microservizi
+
+Questo progetto è stato volutamente progettato utilizzando un'architettura a microservizi. Invece di un'unica, monolitica applicazione, la suite è suddivisa in servizi più piccoli e indipendenti, ognuno con una singola responsabilità.
+
+### Vantaggi
+
+- **Modularità e Manutenibilità:** È facile aggiornare o correggere un servizio (es. `telegram-feed-service`) senza influenzare gli altri.
+- **Resilienza:** Un errore in un servizio non compromette l'intera suite.
+- **Scalabilità Indipendente:** Ogni servizio può essere scalato in modo indipendente.
+- **Flessibilità Tecnologica:** Ogni servizio può usare la tecnologia più adatta al suo scopo.
+
+---
+
+## Panoramica dei Servizi
+
+| Servizio                 | Porta | Descrizione                                             |
+|--------------------------|-------|---------------------------------------------------------|
+| Telegram Feed Service    | 8080  | Si collega a Telegram, cattura messaggi e li serve via JSON. |
+| Schedule Display Service | 8081  | Mostra gli orari delle lezioni collegandosi a fonti esterne. |
+| Floor Plan Display       | 8082  | Mostra planimetrie statiche.                            |
+| Wayfinding Service       | 8083  | Mostra frecce, indicazioni e info ascensori.            |
+
+Ogni servizio ha un proprio `README.md` dedicato per approfondimenti.
+
+---
+
+## Struttura Completa del Progetto
 
 ```
-Info_Kiosk_Display/
-├── telegram-kiosk-display/         # Bot Telegram + Feed API
-│   ├── app/
-│   │   ├── __init__.py              # Init Flask + Blueprint
-│   │   ├── api/
-│   │   │   └── routes.py            # /feed.json, /assets, ecc.
-│   │   ├── services/
-│   │   │   ├── author_utils.py      # Estrae autore del messaggio
-│   │   │   ├── fetch.py             # Recupera messaggi Telegram
-│   │   │   └── json_utils.py        # Scrive/appende JSON feed
-│   │   ├── tools/
-│   │   │   ├── get_chat_id.py       # Trova ID chat via username
-│   │   │   └── get_session_string.py# Genera SESSION_STRING
-│   │   ├── client.py                # Inizializza TelegramClient
-│   │   ├── config.py                # Carica .env (API_ID, …)
-│   │   └── listener.py              # Listener Telethon → salva feed
-│   ├── data/                        # JSON feed persistente
-│   ├── web/
-│   │   ├── index.html               # Frontend statico (monitor)
-│   │   ├── assets/
-│   │   │   ├── favicon.ico
-│   │   │   └── monitor_background.png
-│   │   └── static/
-│   │       ├── css/
-│   │       │   └── style.css
-│   │       └── js/
-│   │           └── script.js
-│   ├── .env                         # API_ID, API_HASH, SESSION_STRING, …
-│   ├── .gitignore
-│   ├── run.py                       # Avvio Flask + Telethon
-│   ├── entrypoint.sh                # Script d’ingresso Docker
-│   ├── requirements.txt
-│   └── Dockerfile
-│
-├── lession-kiosk-display/          # API Lezioni + Frontend aule/piani
-│   ├── app/
-│   │   ├── __init__.py              # Init Flask + Blueprint
-│   │   ├── config.py                # Carica .env (API, SESSION, DATA_DIR,…)
-│   │   ├── constants.py             # Mappa ID aule/piani
-│   │   ├── models.py                # Schemi Pydantic, cache
-│   │   ├── routes.py                # /lessons POST, /floor/<n> GET
-│   │   └── services.py              # Fetch e split delle lezioni
-│   ├── web/
-│   │   ├── assets/
-│   │   │   ├── favicon.ico
-│   │   │   └── monitor_background.png
-│   │   ├── static/
-│   │   │   ├── css/
-│   │   │   │   ├── classroom_style.css
-│   │   │   │   └── floor_style.css
-│   │   │   └── js/
-│   │   │       ├── classroom_script.js
-│   │   │       └── floor_script.js
-│   │   ├── classroom/
-│   │   │   └── index.html           # Vista singola aula
-│   │   └── floor/
-│   │       ├── floor0.html          # Vista piano 0
-│   │       ├── floor1.html          # Vista piano 1
-│   │       └── floorM1.html         # Vista piano -1
-│   ├── requirements.txt
-│   └── Dockerfile
-│
-├── docker-compose.yml               # Orchestrazione bot + lezioni
-└── .gitignore                       # Root: esclude .env, /data, ecc.                     
+
+DigitalSignageSuite/
+├── 📂 docs/
+│   └── 📄 suite-showcase.png
+├── 📂 floorplan-display-service/
+│   ├── 📂 ui/
+│   │   ├── 📂 assets/
+│   │   │   └── 📂 building_a/
+│   │   │       └── 📂 floor1/
+│   │   │           └── 📄 blockA.jpg
+│   │   ├── 📂 static/
+│   │   │   ├── 📂 css/
+│   │   │   │   └── 📄 style.css
+│   │   │   └── 📂 js/
+│   │   │       └── 📄 script.js
+│   │   ├── 📄 favicon.ico
+│   │   └── 📄 index.html
+│   ├── 📄 Dockerfile
+│   ├── 📄 README.md
+│   ├── 📄 requirements.txt
+│   └── 📄 run.py
+├── 📂 schedule-display-service/
+│   ├── 📂 app/
+│   │   ├── 📄 config.py
+│   │   ├── 📄 constants.py
+│   │   ├── 📄 init.py
+│   │   ├── 📄 models.py
+│   │   ├── 📄 routes.py
+│   │   └── 📄 services.py
+│   ├── 📂 ui/
+│   │   ├── 📂 assets/
+│   │   │   └── 📄 monitor_background.png
+│   │   ├── 📂 static/
+│   │   │   ├── 📂 css/
+│   │   │   │   ├── 📄 classroom_style.css
+│   │   │   │   └── 📄 floor_style.css
+│   │   │   └── 📂 js/
+│   │   │       ├── 📄 classroom_script.js
+│   │   │       └── 📄 floor_script.js
+│   │   ├── 📄 classroom_view.html
+│   │   └── 📄 floor_view.html
+│   ├── 📄 .env.example
+│   ├── 📄 Dockerfile
+│   ├── 📄 README.md
+│   ├── 📄 requirements.txt
+│   └── 📄 run.py
+├── 📂 telegram-feed-service/
+│   ├── 📂 app/
+│   │   ├── 📂 api/
+│   │   │   └── 📄 routes.py
+│   │   ├── 📂 services/
+│   │   │   ├── 📄 author_resolver.py
+│   │   │   └── 📄 feed_handler.py
+│   │   ├── 📄 config.py
+│   │   ├── 📄 init.py
+│   │   ├── 📄 telegram_client.py
+│   │   └── 📄 telegram_listener.py
+│   ├── 📂 data/
+│   │   └── 📄 (.gitkeep)
+│   ├── 📂 tools/
+│   │   ├── 📄 get_chat_id.py
+│   │   └── 📄 get_session_string.py
+│   ├── 📂 ui/
+│   │   ├── 📂 assets/
+│   │   │   └── 📄 monitor_background.png
+│   │   ├── 📂 static/
+│   │   │   ├── 📂 css/
+│   │   │   │   └── 📄 style.css
+│   │   │   └── 📂 js/
+│   │   │       └── 📄 script.js
+│   │   └── 📄 index.html
+│   ├── 📄 .env.example
+│   ├── 📄 Dockerfile
+│   ├── 📄 README.md
+│   └── 📄 requirements.txt
+└── 📂 wayfinding-service/
+├── 📂 ui/
+│   ├── 📂 assets/
+│   │   ├── 📄 arrow.json
+│   │   └── 📄 logo.png
+│   ├── 📂 static/
+│   │   ├── 📂 css/
+│   │   │   ├── 📄 arrow_style.css
+│   │   │   └── 📄 elevator_style.css
+│   │   └── 📂 js/
+│   │       ├── 📄 arrow_script.js
+│   │       └── 📄 elevator_script.js
+│   ├── 📄 arrow_view.html
+│   └── 📄 elevator_view.html
+├── 📄 Dockerfile
+├── 📄 README.md
+└── 📄 requirements.txt
 ```
 
 ---
 
-## 🚀 Quick Start / Avvio rapido
+## Guida Introduttiva (Getting Started)
 
-> **Prerequisite:** Docker & Docker Compose installati
+### 🔧 Prerequisiti
+
+- Git
+- Docker
+- Docker Compose
+
+### 1. Clona il Repository
 
 ```bash
-# 1. Clona il repository
-git clone https://github.com/TUO_ACCOUNT/Info_Kiosk_Display.git
-cd Info_Kiosk_Display
+git clone <URL_DEL_TUO_REPOSITORY>
+cd DigitalSignageSuite
+```
 
-# 2. Avvia entrambi i servizi con Docker Compose
-docker compose up --build
+### 2. Configura il Servizio Telegram
 
-# 3. Accedi:
-#    • Bot Telegram + Feed UI  → http://localhost:8080
-#    • Lesson Display          → http://localhost:5000/classroom/index.html?classroom=<ID>&building=<ID>&date=YYYY-MM-DD&period=all
-#    • Floor Display           → http://localhost:5000/floor/floor1.html?date=YYYY-MM-DD
+- Vai su `my.telegram.org`, genera `api_id` e `api_hash`
+- Crea `.env` da `.env.example` e compila i dati
+- Genera la `SESSION_STRING`:
+
+```bash
+docker compose run --rm telegram_feed python tools/get_session_string.py
+```
+
+### 3. Avvia la Suite
+
+```bash
+docker compose up --build -d
 ```
 
 ---
 
-## 📦 Services & API Endpoints
+## Utilizzo e Configurazione degli URL
 
-| Service                   | Endpoint                          | Method | Description (EN/IT)                                    |
-|---------------------------|-----------------------------------|--------|--------------------------------------------------------|
-| **Telegram Feed Bot**     | `/feed.json?chat=<chat_id>`       | GET    | Returns latest messages JSON / Restituisce i messaggi |
-|                           | `/`                               | GET    | Serves `web/index.html`                                |
-|                           | `/assets/<filename>`              | GET    | Static assets (images/icons)                           |
-| **Lesson Kiosk Display**  | `/lessons`                        | POST   | Classroom schedule (JSON) / Orario per aula           |
-|                           | `/floor/<floor>?date=<YYYY-MM-DD>`| GET    | Floor schedule (JSON) / Orario per piano               |
-|                           | `/assets/<filename>`              | GET    | Static assets                                          |
+### Telegram Feed (Porta 8080)
 
----
-
-## 🌍 Configuration / Configurazione
-
-Each service reads environment variables from its own `.env`.  
-Common keys:
-
-```dotenv
-API_ID=...
-API_HASH=...
-SESSION_STRING=...
-DATA_DIR=/app/data
-PROFANITY=OFF|ON
+```
+http://localhost:8080/?chat=<ID_CHAT>&classroom=<NOME_AULA>
 ```
 
----
+### Schedule Display (Porta 8081)
 
-## 🔗 Usage Examples / Esempi URL
+- Aula: `http://localhost:8081/views/classroom_view.html?...`
+- Piano: `http://localhost:8081/views/floor_view.html?...`
 
-- **Telegram Feed UI:**  
-  `http://localhost:8080/?chat=<TELEGRAM_CHAT_ID>`
-- **Classroom View:**  
-  `http://localhost:5000/web/classroom/index.html?classroom=6144b4a006477900174b0ce3&building=5f6cb2c183c80e0018f4d46&date=2025-03-19&period=all`
-- **Floor View:**  
-  `http://localhost:5000/web/floor/floor1.html?date=2025-03-19`
+### Floor Plan Display (Porta 8082)
 
----
+```
+http://localhost:8082/<EDIFICIO>/floor<PIANO>/<IMMAGINE>
+```
 
-## 📚 Technologies / Tecnologie
+### Wayfinding (Porta 8083)
 
-- **Backend:** Python 3.11, Flask, Gunicorn, Telethon, Pydantic, python-dotenv  
-- **Frontend:** HTML5, CSS3, Vanilla JavaScript  
-- **Deployment:** Docker, Docker Compose  
+- Frecce: `arrow_view.html?left=...&leftDirection=...`
+- Ascensore: `elevator_view.html?floor=...&content=...`
 
 ---
 
-## 👥 Authors / Autori
+## Stack Tecnologico
 
-- **Massimo Mantineo** – Università di Messina  
+- **Backend:** Python 3.11, Flask, Gunicorn, Telethon, Pydantic
+- **Frontend:** HTML5, CSS3, Vanilla JS
+- **Animazioni:** Lottie
+- **Orchestrazione:** Docker, Docker Compose
 
 ---
 
-## 📄 License / Licenza
+## Autori
 
-> This project is released under the [MIT License](LICENSE).  
-> Questo progetto è distribuito sotto licenza [Licenza MIT](LICENSE).
+Massimo Mantineo – Università degli Studi di Messina
