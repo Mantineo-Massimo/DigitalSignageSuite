@@ -1,36 +1,36 @@
 services:
-  telegram_feed:
-    container_name: telegram_feed_service
+  telegram_service:
+    container_name: telegram_service
     build:
-      context: ./telegram-feed-service
+      context: ./telegram-service
       dockerfile: Dockerfile
     ports:
       - "8080:8080"
     env_file:
-      - ./telegram-feed-service/.env
+      - ./telegram-service/.env
     volumes:
-      - ./telegram-feed-service/data:/app/data
+      - ./telegram-service/data:/app/data
     networks:
       - signage_network
     restart: unless-stopped
 
-  schedule_display:
-    container_name: schedule_display_service
+  schedule_service:
+    container_name: schedule_service
     build:
-      context: ./schedule-display-service
+      context: ./schedule-service
       dockerfile: Dockerfile
     ports:
       - "8081:8080"
     env_file:
-      - ./schedule-display-service/.env
+      - ./schedule-service/.env
     networks:
       - signage_network
     restart: unless-stopped
 
-  floorplan_display:
-    container_name: floorplan_display_service
+  floorplan_service:
+    container_name: floorplan_service
     build:
-      context: ./floorplan-display-service
+      context: ./floorplan-service
       dockerfile: Dockerfile
     ports:
       - "8082:8080"
@@ -38,7 +38,7 @@ services:
       - signage_network
     restart: unless-stopped
 
-  wayfinding:
+  wayfinding_service:
     container_name: wayfinding_service
     build:
       context: ./wayfinding-service

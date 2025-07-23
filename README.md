@@ -3,8 +3,6 @@
 
 Una suite di microservizi basata su Docker per creare un sistema di digital signage universitario completo, modulare e dinamico, interamente controllabile tramite URL e API.
 
-> **Nota:** Per un risultato ottimale, crea una cartella `docs/` nella root del progetto e inserisci uno screenshot rappresentativo della suite in azione.
-
 ---
 
 ## Indice
