@@ -185,8 +185,14 @@ http://localhost:8080/?chat=<ID_CHAT>&classroom=<NOME_AULA>
 
 ### Schedule Display (Porta 8081)
 
-- Aula: `http://localhost:8081/views/classroom_view.html?...`
-- Piano: `http://localhost:8081/views/floor_view.html?...`
+- Aula: 
+``` 
+http://localhost:8081/views/classroom_view.html?classroom=<ID_AULA>&building=<ID_EDIFICIO>
+```
+- Piano:
+``` 
+http://localhost:8081/views/floor_view.html?floor=<N_PIANO>&building=<NOME_EDIFICIO>
+```
 
 ### Floor Plan Display (Porta 8082)
 
@@ -196,8 +202,14 @@ http://localhost:8082/<EDIFICIO>/floor<PIANO>/<IMMAGINE>
 
 ### Wayfinding (Porta 8083)
 
-- Frecce: `arrow_view.html?left=...&leftDirection=...`
-- Ascensore: `elevator_view.html?floor=...&content=...`
+- Frecce:
+``` 
+arrow_view.html?left=<TESTO>&leftDirection=<DIREZIONE>
+```
+- Ascensore:
+``` 
+elevator_view.html?floor=<PIANO>&content=<CONTENUTO>
+```
 
 ---
 
