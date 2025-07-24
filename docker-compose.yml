@@ -1,11 +1,23 @@
+
+
 services:
+  nginx_proxy:
+    container_name: nginx_proxy
+    build: ./nginx
+    ports:
+      - "80:80"
+    networks:
+      - signage_network
+    depends_on:
+      - telegram_service
+      - schedule_service
+      - floorplan_service
+      - wayfinding_service
+    restart: unless-stopped
+
   telegram_service:
     container_name: telegram_service
-    build:
-      context: ./telegram-service
-      dockerfile: Dockerfile
-    ports:
-      - "8080:8080"
+    build: ./telegram-service
     env_file:
       - ./telegram-service/.env
     volumes:
@@ -16,11 +28,7 @@ services:
 
   schedule_service:
     container_name: schedule_service
-    build:
-      context: ./schedule-service
-      dockerfile: Dockerfile
-    ports:
-      - "8081:8080"
+    build: ./schedule-service
     env_file:
       - ./schedule-service/.env
     networks:
@@ -29,22 +37,21 @@ services:
 
   floorplan_service:
     container_name: floorplan_service
-    build:
-      context: ./floorplan-service
-      dockerfile: Dockerfile
-    ports:
-      - "8082:8080"
+    build: ./floorplan-service
     networks:
       - signage_network
     restart: unless-stopped
 
   wayfinding_service:
     container_name: wayfinding_service
-    build:
-      context: ./wayfinding-service
-      dockerfile: Dockerfile
-    ports:
-      - "8083:8080"
+    build: ./wayfinding-service
+    networks:
+      - signage_network
+    restart: unless-stopped
+
+  totem_service:
+    container_name: totem_service
+    build: ./totem-service
     networks:
       - signage_network
     restart: unless-stopped

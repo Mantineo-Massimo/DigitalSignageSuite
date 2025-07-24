@@ -7,13 +7,13 @@ Una suite di microservizi basata su Docker per creare un sistema di digital sign
 
 ## Indice
 
-- Filosofia del Progetto
-- Panoramica dei Servizi
-- Struttura Completa del Progetto
-- Guida Introduttiva (Getting Started)
-- Utilizzo e Configurazione degli URL
-- Stack Tecnologico
-- Autori
+1.  [Filosofia del Progetto](#-filosofia-del-progetto-un-approccio-a-microservizi)
+2.  [Panoramica dei Servizi](#-panoramica-dei-servizi)
+3.  [Struttura Completa del Progetto](#-struttura-completa-del-progetto)
+4.  [Guida Introduttiva (Getting Started)](#-guida-introduttiva-getting-started)
+5.  [Utilizzo e Configurazione degli URL](#-utilizzo-e-configurazione-degli-url)
+6.  [Stack Tecnologico](#-stack-tecnologico)
+7.  [Autori](#️-autori)
 
 ---
 
@@ -32,14 +32,14 @@ Questo progetto è stato volutamente progettato utilizzando un'architettura a mi
 
 ## Panoramica dei Servizi
 
-| Servizio                 | Porta | Descrizione                                             |
-|--------------------------|-------|---------------------------------------------------------|
-| Telegram Feed Service    | 8080  | Si collega a Telegram, cattura messaggi e li serve via JSON. |
-| Schedule Display Service | 8081  | Mostra gli orari delle lezioni collegandosi a fonti esterne. |
-| Floor Plan Display       | 8082  | Mostra planimetrie statiche.                            |
-| Wayfinding Service       | 8083  | Mostra frecce, indicazioni e info ascensori.            |
 
-Ogni servizio ha un proprio `README.md` dedicato per approfondimenti.
+| Servizio                      | Prefisso URL      | Descrizione                                                              | Dettagli                                               |
+| :---------------------------- | :---------------- | :------------------------------------------------------------------------ | :----------------------------------------------------------- |
+| **Telegram Feed Service** | `/telegram/`      | Cattura messaggi da una chat Telegram e li mostra come feed.              | [Leggi il README](./telegram-service/README.md)         |
+| **Schedule Display Service** | `/schedule/`      | Mostra gli orari delle lezioni per aula e per piano.                      | [Leggi il README](./schedule-service/README.md)      |
+| **Floor Plan Display Service**| `/floorplan/`     | Visualizza planimetrie di edifici e piani.                                | [Leggi il README](./floorplan-service/README.md)     |
+| **Wayfinding Service** | `/wayfinding/`    | Mostra indicazioni direzionali (frecce) e info per ascensori.             | [Leggi il README](./wayfinding-service/README.md)            |
+
 
 ---
 
@@ -182,38 +182,38 @@ docker compose up --build -d
 
 ## Utilizzo e Configurazione degli URL
 
-### Telegram Feed (Porta 8080)
+### Telegram Feed
 
 ```
-http://localhost:8080/?chat=<ID_CHAT>&classroom=<NOME_AULA>
+http://localhost/telegram/?chat=<ID_CHAT>&classroom=<NOME_AULA>
 ```
 
-### Schedule Display (Porta 8081)
+### Schedule Display
 
 - Aula: 
 ``` 
-http://localhost:8081/views/classroom_view.html?classroom=<ID_AULA>&building=<ID_EDIFICIO>
+http://localhost/schedule/classroom_view.html?classroom=<ID_AULA>&building=<ID_EDIFICIO>
 ```
 - Piano:
 ``` 
-http://localhost:8081/views/floor_view.html?floor=<N_PIANO>&building=<NOME_EDIFICIO>
+http://localhost/schedule/floor_view.html?floor=<N_PIANO>&building=<CHIAVE_EDIFICIO>
 ```
 
-### Floor Plan Display (Porta 8082)
+### Floor Plan Display
 
 ```
-http://localhost:8082/<EDIFICIO>/floor<PIANO>/<IMMAGINE>
+http://localhost/floorplan/<EDIFICIO>/<PIANO>/<IMMAGINE>
 ```
 
-### Wayfinding (Porta 8083)
+### Wayfinding
 
 - Frecce:
 ``` 
-arrow_view.html?left=<TESTO>&leftDirection=<DIREZIONE>
+http://localhost/wayfinding/arrow_view.html?left=<TESTO>&leftDirection=<DIREZIONE>
 ```
 - Ascensore:
 ``` 
-elevator_view.html?floor=<PIANO>&content=<CONTENUTO>
+http://localhost/wayfinding/elevator_view.html?floor=<PIANO>&content=<CONTENUTO>
 ```
 
 ---
