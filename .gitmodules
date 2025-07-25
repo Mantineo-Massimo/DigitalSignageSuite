@@ -1,6 +1,3 @@
-[submodule "totem-service"]
-	path = totem-service
-	url = https://github.com/Mantineo-Massimo/totem-service.git
 [submodule "telegram-service"]
 	path = telegram-service
 	url = https://github.com/Mantineo-Massimo/telegram-service.git
@@ -13,3 +10,6 @@
 [submodule "wayfinding-service"]
 	path = wayfinding-service
 	url = https://github.com/Mantineo-Massimo/wayfinding-service.git
+[submodule "totem-service"]
+	path = totem-service
+	url = https://github.com/Mantineo-Massimo/totem-service.git
