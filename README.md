@@ -12,7 +12,7 @@ Una suite di microservizi basata su Docker per creare un sistema di digital sign
 3.  [Struttura Completa del Progetto](#-struttura-completa-del-progetto)
 4.  [Guida Introduttiva (Getting Started)](#-guida-introduttiva-getting-started)
 5.  [Utilizzo e Configurazione degli URL](#-utilizzo-e-configurazione-degli-url)
-6.  [Stack Tecnologico](#-stack-tecnologico)
+6.  [Tecnologie Utilizzate](#-tecnologie-utilizzate)
 7.  [Autori](#️-autori)
 
 ---
@@ -74,12 +74,14 @@ DigitalSignageSuite/
 │   └── 📄 run.py
 ├── 📂 schedule-service/
 │   ├── 📂 app/
+│   │   ├── 📂 api/
+│   │   │   └── 📄 routes.py
+│   │   ├── 📂 services/
+│   │   │   ├── 📄 constants.py
+│   │   │   ├── 📄 models.py
+│   │   │   └── 📄 services.py
 │   │   ├── 📄 config.py
-│   │   ├── 📄 constants.py
-│   │   ├── 📄 init.py
-│   │   ├── 📄 models.py
-│   │   ├── 📄 routes.py
-│   │   └── 📄 services.py
+│   │   └── 📄 __init__.py
 │   ├── 📂 ui/
 │   │   ├── 📂 assets/
 │   │   │   └── 📄 monitor_background.png
@@ -109,7 +111,7 @@ DigitalSignageSuite/
 │   │   ├── 📄 telegram_client.py
 │   │   └── 📄 telegram_listener.py
 │   ├── 📂 data/
-│   │   └── 📄 (.gitkeep)
+│   │   └── 📄 feed-CHATID.json
 │   ├── 📂 tools/
 │   │   ├── 📄 get_chat_id.py
 │   │   └── 📄 get_session_string.py
@@ -126,23 +128,23 @@ DigitalSignageSuite/
 │   ├── 📄 Dockerfile
 │   ├── 📄 README.md
 │   └── 📄 requirements.txt
-└── 📂 wayfinding-service/
-├── 📂 ui/
-│   ├── 📂 assets/
-│   │   ├── 📄 arrow.json
-│   │   └── 📄 logo.png
-│   ├── 📂 static/
-│   │   ├── 📂 css/
-│   │   │   ├── 📄 arrow_style.css
-│   │   │   └── 📄 elevator_style.css
-│   │   └── 📂 js/
-│   │       ├── 📄 arrow_script.js
-│   │       └── 📄 elevator_script.js
-│   ├── 📄 arrow_view.html
-│   └── 📄 elevator_view.html
-├── 📄 Dockerfile
-├── 📄 README.md
-└── 📄 requirements.txt
+├── 📂 wayfinding-service/
+    ├── 📂 ui/
+    │   ├── 📂 assets/
+    │   │   ├── 📄 arrow.json
+    │   │   └── 📄 logo.png
+    │   ├── 📂 static/
+    │   │   ├── 📂 css/
+    │   │   │   ├── 📄 arrow_style.css
+    │   │   │   └── 📄 elevator_style.css
+    │   │   └── 📂 js/
+    │   │       ├── 📄 arrow_script.js
+    │   │       └── 📄 elevator_script.js
+    │   ├── 📄 arrow_view.html
+    │   └── 📄 elevator_view.html
+    ├── 📄 Dockerfile
+    ├── 📄 README.md
+    └── 📄 requirements.txt
 ```
 
 ---
@@ -218,7 +220,7 @@ http://localhost/wayfinding/elevator_view.html?floor=<PIANO>&content=<CONTENUTO>
 
 ---
 
-## Stack Tecnologico
+## Tecnologie Utilizzate
 
 - **Backend:** Python 3.11, Flask, Gunicorn, Telethon, Pydantic
 - **Frontend:** HTML5, CSS3, Vanilla JS
