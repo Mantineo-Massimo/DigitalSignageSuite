@@ -56,6 +56,14 @@ services:
       - signage_network
     restart: unless-stopped
 
+  time_service:
+    container_name: time_service
+    # La direttiva 'build' dice a Docker di costruire l'immagine
+    # usando il Dockerfile che si trova nella cartella ./time-service
+    build: ./time-service
+    networks:
+      - signage_network
+    restart: unless-stopped
 networks:
   signage_network:
     driver: bridge
