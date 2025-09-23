@@ -1,6 +1,12 @@
-
-
 services:
+  # Il nuovo servizio Redis, gestito da Compose.
+  redis_cache:
+    image: redis:alpine
+    container_name: redis_cache
+    networks:
+      - signage_network
+    restart: unless-stopped
+
   nginx_proxy:
     container_name: nginx_proxy
     build: ./nginx
@@ -9,6 +15,7 @@ services:
     networks:
       - signage_network
     depends_on:
+      - redis_cache         # Aggiunta dipendenza
       - telegram_service
       - schedule_service
       - floorplan_service
@@ -34,6 +41,8 @@ services:
     networks:
       - signage_network
     restart: unless-stopped
+    depends_on:
+      - redis_cache
 
   floorplan_service:
     container_name: floorplan_service
@@ -58,12 +67,11 @@ services:
 
   time_service:
     container_name: time_service
-    # La direttiva 'build' dice a Docker di costruire l'immagine
-    # usando il Dockerfile che si trova nella cartella ./time-service
     build: ./time-service
     networks:
       - signage_network
     restart: unless-stopped
+
 networks:
   signage_network:
     driver: bridge
