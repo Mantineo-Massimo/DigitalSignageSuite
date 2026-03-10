@@ -15,11 +15,12 @@ services:
     networks:
       - signage_network
     depends_on:
-      - redis_cache         # Aggiunta dipendenza
+      - redis_cache       
       - telegram_service
       - schedule_service
       - floorplan_service
       - wayfinding_service
+      - totem_service
     restart: unless-stopped
 
   telegram_service:
